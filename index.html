@@ -148,7 +148,7 @@
       <div class="pct-line"><span>85.1% of camp-week goal</span><span class="pill pill-caution">194 to go</span></div>
       <div class="kpi-grid">
         <div>Summer slots<br><b>1,040</b> / 1,440</div>
-        <div>Unique participants<br><b>644</b> / 700</div>
+        <div>Unique participants<br><b>651</b> / 700</div>
         <div>Open summer slots<br><b>400</b></div>
         <div>Remaining waitlist<br><b>22</b></div>
       </div>
@@ -283,9 +283,9 @@
     <div class="panel">
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
         <div><div class="kpi-label">Enrolled slots</div><div style="font-size:1.5rem;font-weight:800;color:var(--forest)">23</div><div class="kpi-sub" style="margin:0">of 60 &middot; 38% fill</div></div>
-        <div><div class="kpi-label">Unique campers</div><div style="font-size:1.5rem;font-weight:800;color:var(--pine)">20</div><div class="kpi-sub" style="margin:0">4 in multiple</div></div>
+        <div><div class="kpi-label">Unique campers</div><div style="font-size:1.5rem;font-weight:800;color:var(--pine)">19</div><div class="kpi-sub" style="margin:0">3 in multiple</div></div>
         <div><div class="kpi-label">Revenue</div><div style="font-size:1.5rem;font-weight:800;color:var(--sky)">$7,200</div><div class="kpi-sub" style="margin:0">avg $313/slot</div></div>
-        <div><div class="kpi-label">Open slots</div><div style="font-size:1.5rem;font-weight:800;color:var(--canyon)">37</div><div class="kpi-sub" style="margin:0">~$11.1k potential</div></div>
+        <div><div class="kpi-label">Open slots</div><div style="font-size:1.5rem;font-weight:800;color:var(--canyon)">37</div><div class="kpi-sub" style="margin:0">~$11.6k potential</div></div>
       </div>
       <div class="chart-box" style="height:230px"><canvas id="fridayChart"></canvas></div>
     </div>
@@ -317,16 +317,17 @@
       <h4>Changes since last update (v42 &rarr; v43)</h4>
       <ul>
         <li><b>New 7.1 reports &mdash; full-ledger reconcile.</b> A complete Transaction Summary and the 7.1 enrollment detail were pulled. <b>No new transaction identifiers</b> &mdash; every category matches the known list exactly.</li>
-        <li><b>Net &minus;1 summer slot,</b> a single Friday-program cancellation. Summer slots <b>1,041 &rarr; 1,040</b> (SUP and Send, Session 8 Friday, 2 &rarr; 1 enrolled; every other camp in every session held exactly flat); camp weeks <b>1,107 &rarr; 1,106</b>. Total Session Assignments held at <b>1,134</b> (reconciles exactly: 1,105 enrolled + 29 waitlist) &mdash; the enrolled dip was offset by one new waitlist add in Session 5.</li>
+        <li><b>Net &minus;1 summer slot,</b> a single Friday-program cancellation. Summer slots <b>1,041 &rarr; 1,040</b> (SUP and Send, Session 8 Friday, 2 &rarr; 1 enrolled; every other camp in every session held exactly flat); camp weeks <b>1,107 &rarr; 1,106</b>. Total Session Assignments held at <b>1,134</b> (reconciles exactly: 1,098 enrolled + 36 waitlist, across summer + spring + winter programs) &mdash; the enrolled dip was offset by one new waitlist add in Session 5.</li>
         <li><b>Revenue essentially flat.</b> Adjusted gross <b>$1,360,625 &rarr; $1,360,425</b> (&minus;$200, tracking the cancelled slot); net after discounts <b>$1,093,337 &rarr; $1,093,137</b> &mdash; still <b>100.5% of the $1,087,558 budget</b> (over budget). Cancel fees held flat at <b>$23,993</b>. System refund ticked up <b>$11,810 &rarr; $12,110</b> (+$300).</li>
         <li><b>Total TA unchanged at $247,048.25</b> &mdash; every single counted component is identical to v42 (need-based $94,178.25, Ajax $74,490, Local $29,535, Deed $23,320, West End $19,300, Zero Pay net $3,125, Gift $2,000, Trade approved $1,100). No TA category moved this pull.</li>
         <li><b>Gap narrowed slightly.</b> The denominator shrank $200 (the 20% goal eased <b>$272,125 &rarr; $272,085</b>) while TA held flat, so TA as % of gross held at <b>18.16%</b> and the gap moved <b>$25,077 &rarr; $25,037</b> (&minus;$40).</li>
         <li><b>Watchlist.</b> Llama Trek-O-Rama (S6) fell back under 10 (now 9 enrolled) and re-enters the promo list. SUP and Send (S8 Friday) dropped 2 &rarr; 1, deepening its under-enrollment flag. Upcoming two (S5 &amp; S6) now <b>10 camps / 31 spots</b> (was 9/30); rest-of-season (S7&ndash;S10) now <b>8 camps / 22 spots</b> (was 8/21).</li>
+        <li><b>Unique participants recount: 644 &rarr; 651.</b> A full name-by-name recount (see Manually Added notes) replaces the figure that had been carried forward since 6.28. This is a data-quality correction, not new enrollment growth.</li>
       </ul>
       <h4>Manually added / adjusted</h4>
       <ul>
         <li><b>Remaining waitlist (22):</b> counts only sessions still open to enroll. As of today (7.1), Sessions 1&ndash;4 have started (Session 4 began June 29), so those are excluded. Open sessions S5&ndash;S10 hold 22 (S5 3, S6 7, S8 3, S9 9), from the live 7.1 enrollment report. Total summer waitlist across all sessions is 29.</li>
-        <li><b>Unique participants (644)</b> &mdash; held from the authoritative distinct-camper recount (608 summer + 36 winter/spring-only). This pull's net &minus;1 slot is a Friday add-on cancellation for a camper already counted via her main-session enrollment, so the distinct-camper figure is unaffected. A further 18 campers appear on waitlists only, and up to 8 paper Mountainfilm campers may add if distinct.</li>
+        <li><b>Unique participants: fresh exact recount, 644 &rarr; 651.</b> Every ENROLLED and WAITLIST name across all 144 camp/program rosters in the 7.1 detail was extracted and reconciled &mdash; the count of name-instances matched the PDF's own "Total Session Assignments: 1,134" exactly (1,098 enrolled + 36 waitlist, with every individual camp header count matching too), so this is a verified full recount, not an estimate. Distinct enrolled campers: <b>651</b> (614 summer-enrolled = 593 summer-only + 21 who also do winter/spring, plus 37 winter/spring-only). The prior 644 had been carried forward unchanged since the 6.28 recount across many small enrollment pulls; this pull's cumulative drift resolves to +7. A further <b>19</b> campers appear on waitlists only (not enrolled anywhere), and up to 8 paper Mountainfilm campers may add if distinct.</li>
         <li>8 Mountainfilm enrollments still on paper, added as 8 camp weeks (no tuition); separate from the 8 now in Campminder.</li>
         <li>West End effective TA ($19,300) calculated manually: 23 slots &times; $1,000 valuation, less $3,700 charged.</li>
         <li>Deed-Restricted Discount ($18,520) moved from Summer Tuition into the TA/discount bucket.</li>
