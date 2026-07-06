@@ -6,417 +6,235 @@
 <title>Telluride Academy 2026 Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root {
-    --forest:  #2d5a27;
-    --pine:    #3e7b35;
-    --sage:    #7ab648;
-    --sky:     #4a9eca;
-    --canyon:  #e07b39;
-    --gold:    #f0b429;
-    --alert:   #e53e3e;
-    --bg:      #f4f7f0;
-    --card:    #ffffff;
-    --text:    #1a2e1a;
-    --muted:   #6b7b6b;
-    --border:  #d4e0ce;
-    --shadow:  0 2px 12px rgba(45,90,39,0.10);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
-
-  .header {
-    background: linear-gradient(135deg, var(--forest) 0%, var(--pine) 60%, #4a8c40 100%);
-    color: white; padding: 28px 36px 22px;
-    display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;
-  }
-  .header h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.3px; }
-  .header .sub { font-size: 0.88rem; opacity: 0.82; margin-top: 4px; }
-  .mission-tag { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 14px; font-size: 0.78rem; letter-spacing: 0.3px; margin-top: 6px; display: inline-block; }
-  .header-meta { text-align: right; }
-  .header-meta .date { font-size: 0.82rem; opacity: 0.75; margin-bottom: 3px; }
-  .header-meta .ver { font-size: 0.72rem; opacity: 0.6; }
-
-  .main { max-width: 1400px; margin: 0 auto; padding: 28px 24px 48px; }
-
-  .section-title {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--forest); margin: 26px 0 12px; padding-bottom: 4px; border-bottom: 2px solid var(--border);
-  }
-
-  /* KPI CARDS */
-  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .kpi-card {
-    background: var(--card); border-radius: 14px; padding: 22px 24px 18px;
-    box-shadow: var(--shadow); border-top: 4px solid var(--sage);
-  }
-  .kpi-card.revenue    { border-top-color: var(--sky); }
-  .kpi-card.assistance { border-top-color: var(--canyon); }
-  .kpi-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
-  .kpi-value { font-size: 2.1rem; font-weight: 800; line-height: 1.1; margin: 6px 0 4px; }
-  .kpi-card.enrollment  .kpi-value { color: var(--forest); }
-  .kpi-card.revenue     .kpi-value { color: var(--sky); }
-  .kpi-card.assistance  .kpi-value { color: var(--canyon); }
-  .kpi-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; }
-  .kpi-bar-wrap { background: var(--border); border-radius: 99px; height: 10px; overflow: hidden; }
-  .kpi-bar { height: 10px; border-radius: 99px; }
-  .pct-line { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.8rem; color: var(--muted); }
-  .pill { padding: 2px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 700; }
-  .pill-good { background: #e3f3da; color: #2d6a1f; }
-  .pill-caution { background: #fdf0cf; color: #946400; }
-  .pill-alert { background: #fbe0e0; color: #b32020; }
-  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
-  .kpi-grid div { font-size: 0.78rem; color: var(--muted); }
-  .kpi-grid b { color: var(--text); font-weight: 700; }
-
-  /* GAUGES */
-  .gauge-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .gauge-card { background: var(--card); border-radius: 14px; padding: 18px 20px 14px; box-shadow: var(--shadow); text-align: center; }
-  .gauge-card h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
-  .gauge-wrap { position: relative; height: 150px; }
-  .gauge-center { position: absolute; left: 0; right: 0; top: 64%; transform: translateY(-50%); }
-  .gauge-center .big { font-size: 1.9rem; font-weight: 800; }
-  .gauge-center .lbl { font-size: 0.72rem; color: var(--muted); }
-
-  /* SESSION GRID */
-  .panel { background: var(--card); border-radius: 14px; padding: 20px 24px; box-shadow: var(--shadow); }
-  .chart-box { position: relative; height: 300px; }
-
-  /* TABLE */
-  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
-  th { text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); padding: 8px 10px; border-bottom: 2px solid var(--border); }
-  td { padding: 9px 10px; }
-  tbody tr:nth-child(odd) { background: #f8faf5; }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
-  td.ctr { text-align: center; }
-  tr.excl td { color: var(--muted); }
-  tfoot td { border-top: 2px solid var(--border); font-weight: 800; padding-top: 12px; }
-  .yes { color: var(--pine); font-weight: 800; }
-  .no { color: var(--muted); }
-
-  /* DATA NOTES */
-  .notes { background: #f0f7ec; border-left: 4px solid var(--sage); border-radius: 10px; padding: 18px 22px; }
-  .notes h4 { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--forest); margin: 14px 0 7px; }
-  .notes h4:first-child { margin-top: 0; }
-  .notes ul { margin: 0 0 0 18px; }
-  .notes li { font-size: 0.82rem; margin-bottom: 5px; line-height: 1.4; }
-  .flag { background: #fdf0cf; border-left-color: var(--gold); }
-  .flag h4 { color: #946400; }
-
-  .two-col { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; align-items: start; }
-  /* PROMO WATCHLIST */
-  .summary-tile { background: linear-gradient(135deg,#fff8ec,#fdeecb); border-left:4px solid var(--gold); border-radius:10px; padding:14px 20px; margin-bottom:16px; font-size:0.9rem; color:#6b5a1f; line-height:1.5; }
-  .summary-tile b { color:#7a4d12; }
-  .watch-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
-  .watch-head h3 { font-size:0.82rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--forest); }
-  .watch-head .thr { font-size:0.72rem; color:var(--muted); font-weight:700; }
-  .watch-row { display:grid; grid-template-columns: 40px 1fr 64px; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); }
-  .watch-row:last-child { border-bottom:none; }
-  .sess-pill { font-size:0.7rem; font-weight:800; color:#fff; background:var(--pine); border-radius:6px; padding:3px 0; text-align:center; }
-  .watch-name { font-size:0.86rem; font-weight:600; margin-bottom:4px; }
-  .watch-bar-wrap { background:var(--border); border-radius:99px; height:7px; overflow:hidden; }
-  .watch-bar { height:7px; border-radius:99px; }
-  .watch-count { text-align:right; font-size:0.95rem; font-weight:800; font-variant-numeric:tabular-nums; color:var(--text); }
-  .watch-count small { display:block; font-size:0.64rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.4px; }
-  @media (max-width: 768px) {
-    .kpi-row, .gauge-row, .two-col { grid-template-columns: 1fr; }
-  }
+:root{
+ --forest:#2d5a27; --pine:#3e7b35; --sage:#7ab648; --sky:#4a9eca;
+ --canyon:#e07b39; --gold:#f0b429; --alert:#e53e3e; --bg:#f4f7f0;
+ --card:#ffffff; --text:#1a2e1a; --muted:#6b7b6b; --border:#d4e0ce;
+ --shadow:0 2px 12px rgba(45,90,39,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+.wrap{max-width:1400px;margin:0 auto;padding:0 22px 60px}
+header{background:linear-gradient(120deg,var(--forest),var(--pine));color:#fff;padding:26px 34px;border-radius:0 0 20px 20px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px}
+header h1{font-size:1.7rem;font-weight:700;letter-spacing:.2px}
+.pill-tag{display:inline-block;margin-top:10px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:5px 13px;border-radius:20px;font-size:.74rem;letter-spacing:.4px}
+.asof{text-align:right;font-size:.9rem;opacity:.95}
+.asof .ver{font-size:.7rem;opacity:.8;margin-top:3px}
+.sec-h{font-size:.72rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--forest);font-weight:700;margin:30px 4px 12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--card);border-radius:14px;padding:22px 24px 18px;box-shadow:var(--shadow);border-top:4px solid var(--muted)}
+.card.enroll{border-top-color:var(--forest)}
+.card.rev{border-top-color:var(--sky)}
+.card.ta{border-top-color:var(--canyon)}
+.k-label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.k-val{font-size:2.1rem;font-weight:700;margin:2px 0 1px}
+.k-sub{font-size:.82rem;color:var(--muted)}
+.bar{height:9px;border-radius:6px;background:#e8efe2;margin:14px 0 7px;overflow:hidden}
+.bar>span{display:block;height:100%;border-radius:6px}
+.bar-lab{display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
+.pill{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:12px}
+.pill-good{background:#e3f3d9;color:#3a6d1f}
+.pill-caution{background:#fdf0cf;color:#a5760a}
+.pill-alert{background:#fbe0e0;color:#c02b2b}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:14px;padding-top:13px;border-top:1px solid var(--border)}
+.mini div{font-size:.75rem;color:var(--muted)}
+.mini b{display:block;font-size:.98rem;color:var(--text);font-weight:700}
+.gauge-card{background:var(--card);border-radius:14px;padding:18px 18px 14px;box-shadow:var(--shadow);text-align:center}
+.gauge-card h3{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
+.gauge-wrap{position:relative;height:150px}
+.gauge-val{position:absolute;bottom:8px;left:0;right:0;font-size:1.7rem;font-weight:700}
+.gauge-goal{font-size:.74rem;color:var(--muted);margin-top:4px}
+.panel{background:var(--card);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--border)}
+td{padding:9px 10px;border-bottom:1px solid #eef3ea}
+tbody tr:nth-child(even){background:#fafcf8}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+td.ctr{text-align:center}
+tfoot td{font-weight:700;border-top:2px solid var(--border);background:#f0f7ec}
+.sess-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px}
+.sess{background:var(--card);border-radius:11px;padding:12px 8px 10px;box-shadow:var(--shadow);text-align:center}
+.sess .sn{font-size:.72rem;font-weight:700;color:var(--forest)}
+.sess .track{height:70px;width:20px;margin:8px auto 6px;background:#e8efe2;border-radius:5px;position:relative;overflow:hidden}
+.sess .fill{position:absolute;bottom:0;left:0;right:0;border-radius:5px}
+.sess .cnt{font-size:.92rem;font-weight:700}
+.sess .pct{font-size:.66rem;color:var(--muted)}
+.notes{background:#f0f7ec;border-left:4px solid var(--sage);border-radius:0 12px 12px 0;padding:18px 22px}
+.notes h4{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--forest);margin:14px 0 7px}
+.notes h4:first-child{margin-top:0}
+.notes ul{margin:0 0 4px 18px}
+.notes li{font-size:.83rem;margin:4px 0;color:#334a30}
+.changes li{color:#1a2e1a}
+.flag{color:var(--canyon);font-weight:700}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.wl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.wl .c{font-size:.8rem;padding:7px 10px;border-radius:8px;background:#fafcf8;border:1px solid var(--border);display:flex;justify-content:space-between}
+.wl .c.red span:last-child{color:var(--alert);font-weight:700}
+.wl .c.amber span:last-child{color:#a5760a;font-weight:700}
+@media(max-width:900px){.grid3,.grid2{grid-template-columns:1fr}.sess-grid{grid-template-columns:repeat(5,1fr)}}
 </style>
 </head>
 <body>
-<div class="header">
-  <div>
-    <h1>Telluride Academy 2026 Dashboard</h1>
-    <div class="sub">Enrollment, Tuition Revenue &amp; Tuition Assistance vs. Budget</div>
-    <span class="mission-tag">Connecting youth with nature through adventure, creativity &amp; stewardship</span>
+<header>
+ <div>
+  <h1>Telluride Academy 2026 Dashboard</h1>
+  <span class="pill-tag">Connecting youth with nature — enrollment · revenue · tuition assistance</span>
+ </div>
+ <div class="asof">
+  Data as of July 6, 2026
+  <div class="ver">v50 · full reconcile · EnrollmentReport (6) + TransactionSummary (8)</div>
+ </div>
+</header>
+
+<div class="wrap">
+
+ <div class="sec-h">Key Metrics vs. Goal</div>
+ <div class="grid3">
+  <!-- ENROLLMENT -->
+  <div class="card enroll">
+   <div class="k-label">Enrollment</div>
+   <div class="k-val">1,115</div>
+   <div class="k-sub">camp weeks &nbsp;·&nbsp; goal 1,300</div>
+   <div class="bar"><span style="width:85.8%;background:var(--forest)"></span></div>
+   <div class="bar-lab"><span>85.8% of goal</span><span class="pill pill-caution">185 to go</span></div>
+   <div class="mini">
+    <div><b>1,049</b>summer slots</div>
+    <div><b>652</b>unique participants / 700</div>
+    <div><b>29</b>waitlist (19 open S6–S10)</div>
+    <div><b>1,143</b>total session assignments</div>
+   </div>
   </div>
-  <div class="header-meta">
-    <div class="date">Data as of July 5, 2026</div>
-    <div class="ver">v49 &middot; 7.5.26 full reconcile (new Campminder reports; enrollment as CSV)</div>
+  <!-- REVENUE -->
+  <div class="card rev">
+   <div class="k-label">Net Summer Tuition</div>
+   <div class="k-val">$1,096,020</div>
+   <div class="k-sub">after discounts &nbsp;·&nbsp; budget $1,087,558</div>
+   <div class="bar"><span style="width:100%;background:var(--sky)"></span></div>
+   <div class="bar-lab"><span>100.8% of budget</span><span class="pill pill-good">over budget</span></div>
+   <div class="mini">
+    <div><b>$1,156,039</b>payments received</div>
+    <div><b>$1,376,570</b>adjusted gross full value</div>
+    <div><b>$29,253</b>cancel fees (net)</div>
+    <div><b>$238,486</b>tuition discounts</div>
+   </div>
   </div>
-</div>
-
-<div class="main">
-
-  <!-- ===== KPI ROW ===== -->
-  <div class="kpi-row">
-    <!-- Enrollment -->
-    <div class="kpi-card enrollment">
-      <div class="kpi-label">Enrollment</div>
-      <div class="kpi-value">1,112</div>
-      <div class="kpi-sub">camp weeks enrolled &middot; goal 1,300</div>
-      <div class="kpi-bar-wrap"><div class="kpi-bar" style="width:85.5%; background:var(--pine);"></div></div>
-      <div class="pct-line"><span>85.5% of camp-week goal</span><span class="pill pill-caution">188 to go</span></div>
-      <div class="kpi-grid">
-        <div>Summer slots<br><b>1,046</b> / 1,440</div>
-        <div>Unique participants<br><b>651</b> / 700</div>
-        <div>Open summer slots<br><b>394</b></div>
-        <div>Remaining waitlist<br><b>23</b></div>
-      </div>
-    </div>
-
-    <!-- Revenue -->
-    <div class="kpi-card revenue">
-      <div class="kpi-label">Tuition Revenue</div>
-      <div class="kpi-value">$1.09M</div>
-      <div class="kpi-sub">net summer tuition &middot; budget $1,087,558</div>
-      <div class="kpi-bar-wrap"><div class="kpi-bar" style="width:100%; background:var(--sky);"></div></div>
-      <div class="pct-line"><span>100.5% of net tuition budget</span><span class="pill pill-good">over budget</span></div>
-      <div class="kpi-grid">
-        <div>Adjusted gross full value<br><b>$1,373,035</b></div>
-        <div>Net after discounts<br><b>$1,093,445</b></div>
-        <div>Payments received<br><b>$1,154,399</b></div>
-        <div>Refunds / cancel fees<br><b>$12,710 / $29,253</b></div>
-      </div>
-    </div>
-
-    <!-- TA -->
-    <div class="kpi-card assistance">
-      <div class="kpi-label">Tuition Assistance</div>
-      <div class="kpi-value">$254,258</div>
-      <div class="kpi-sub">18.52% of adjusted gross &middot; goal 20%</div>
-      <div class="kpi-bar-wrap"><div class="kpi-bar" style="width:92.6%; background:var(--canyon);"></div></div>
-      <div class="pct-line"><span>92.6% of the way to 20%</span><span class="pill pill-caution">gap $20,349</span></div>
-      <div class="kpi-grid">
-        <div>20% goal ($)<br><b>$274,607</b></div>
-        <div>Gap to goal<br><b>$20,349</b></div>
-        <div>Need-based + Ajax<br><b>$174,418</b></div>
-        <div>West End effective TA<br><b>$19,300</b></div>
-      </div>
-    </div>
+  <!-- TA -->
+  <div class="card ta">
+   <div class="k-label">Tuition Assistance</div>
+   <div class="k-val">$254,258</div>
+   <div class="k-sub">18.47% of adjusted gross &nbsp;·&nbsp; goal 20%</div>
+   <div class="bar"><span style="width:92.4%;background:var(--canyon)"></span></div>
+   <div class="bar-lab"><span>92.4% of 20% goal</span><span class="pill pill-caution">gap $21,056</span></div>
+   <div class="mini">
+    <div><b>$275,314</b>20% goal ($)</div>
+    <div><b>$21,056</b>gap to goal</div>
+    <div><b>8</b>assistance categories</div>
+    <div><b>23</b>West End slots subsidized</div>
+   </div>
   </div>
+ </div>
 
-  <!-- ===== GAUGES ===== -->
-  <div class="section-title">Progress to Goal</div>
-  <div class="gauge-row">
-    <div class="gauge-card">
-      <h3>Enrollment</h3>
-      <div class="gauge-wrap"><canvas id="gEnroll"></canvas>
-        <div class="gauge-center"><div class="big" style="color:var(--pine)">85.5%</div><div class="lbl">1,112 / 1,300 camp weeks</div></div>
-      </div>
-    </div>
-    <div class="gauge-card">
-      <h3>Revenue</h3>
-      <div class="gauge-wrap"><canvas id="gRev"></canvas>
-        <div class="gauge-center"><div class="big" style="color:var(--sky)">100.5%</div><div class="lbl">net tuition vs. budget</div></div>
-      </div>
-    </div>
-    <div class="gauge-card">
-      <h3>Tuition Assistance</h3>
-      <div class="gauge-wrap"><canvas id="gTA"></canvas>
-        <div class="gauge-center"><div class="big" style="color:var(--canyon)">18.52%</div><div class="lbl">of gross &middot; 20% goal</div></div>
-      </div>
-    </div>
+ <div class="sec-h">Progress Gauges</div>
+ <div class="grid3">
+  <div class="gauge-card"><h3>Enrollment</h3><div class="gauge-wrap"><canvas id="g1"></canvas><div class="gauge-val" style="color:var(--forest)">85.8%</div></div><div class="gauge-goal">1,115 of 1,300 camp weeks</div></div>
+  <div class="gauge-card"><h3>Revenue</h3><div class="gauge-wrap"><canvas id="g2"></canvas><div class="gauge-val" style="color:var(--sky)">100.8%</div></div><div class="gauge-goal">$1.096M of $1.088M budget</div></div>
+  <div class="gauge-card"><h3>Tuition Assistance</h3><div class="gauge-wrap"><canvas id="g3"></canvas><div class="gauge-val" style="color:var(--canyon)">18.5%</div></div><div class="gauge-goal">of 20% goal (92.4% there)</div></div>
+ </div>
+
+ <div class="sec-h">Enrollment by Session (slots)</div>
+ <div class="sess-grid" id="sessGrid"></div>
+
+ <div class="sec-h">Tuition Assistance & Open-Session Watchlist</div>
+ <div class="grid2">
+  <div class="panel">
+   <table>
+    <thead><tr><th>Assistance category</th><th class="num">Amount</th><th class="num">% of TA</th><th class="ctr">Counts to 20%</th></tr></thead>
+    <tbody>
+     <tr><td>Tuition Assistance (need-based)</td><td class="num">$98,328</td><td class="num">38.7%</td><td class="ctr">✓</td></tr>
+     <tr><td>Tuition Assistance — Ajax</td><td class="num">$76,090</td><td class="num">29.9%</td><td class="ctr">✓</td></tr>
+     <tr><td>Local Enrolled (Student + Internal)</td><td class="num">$29,535</td><td class="num">11.6%</td><td class="ctr">✓</td></tr>
+     <tr><td>Deed-Restricted (Discount + Internal)</td><td class="num">$23,320</td><td class="num">9.2%</td><td class="ctr">✓</td></tr>
+     <tr><td>West End effective TA (23 slots)</td><td class="num">$19,300</td><td class="num">7.6%</td><td class="ctr">✓</td></tr>
+     <tr><td>Zero Pay (net of reversals)</td><td class="num">$4,585</td><td class="num">1.8%</td><td class="ctr">✓</td></tr>
+     <tr><td>Gift Certificates</td><td class="num">$2,000</td><td class="num">0.8%</td><td class="ctr">✓</td></tr>
+     <tr><td>Trade (approved exception)</td><td class="num">$1,100</td><td class="num">0.4%</td><td class="ctr">✓</td></tr>
+     <tr style="color:var(--muted)"><td>Last Minute Lucky ($7,508) + LML Internal ($4,244)</td><td class="num">$11,752</td><td class="num">—</td><td class="ctr">—</td></tr>
+     <tr style="color:var(--muted)"><td>Trade (remaining, barter)</td><td class="num">$14,540</td><td class="num">—</td><td class="ctr">—</td></tr>
+    </tbody>
+    <tfoot><tr><td>Total counted TA</td><td class="num">$254,258</td><td class="num">18.47% of gross</td><td class="ctr">gap $21,056</td></tr></tfoot>
+   </table>
   </div>
-
-  <!-- ===== PROMOTIONAL WATCHLIST ===== -->
-  <div class="section-title">Promotional Priorities &middot; Camps Needing Enrollment</div>
-  <div class="summary-tile">
-    <b>9 camps</b> in the upcoming two sessions (S5 &amp; S6) are <b>under 10 enrolled</b> &mdash; 27 spots to fill.
-    <b>5 camps</b> across the rest of the season (S7&ndash;S10) are <b>under 6 enrolled</b> &mdash; 12 spots to fill.
-    Sessions 1&ndash;4 are underway and excluded (Session 4 began June 29; next start is Session 5 on July 6). Counts drawn from the live 7.5 enrollment detail. Sorted by session (chronological), most urgent first within each session.
+  <div class="panel">
+   <div class="k-label">Open-session watchlist &nbsp;·&nbsp; as of July 6 (S5 underway)</div>
+   <p style="font-size:.78rem;color:var(--muted);margin:8px 0 4px">Upcoming two sessions — camps under 10 enrolled</p>
+   <div class="wl" id="wlUp"></div>
+   <p style="font-size:.78rem;color:var(--muted);margin:14px 0 4px">Rest of season (S8–S10) — camps under 6</p>
+   <div class="wl" id="wlRest"></div>
   </div>
-  <div class="two-col">
-    <!-- Upcoming two sessions -->
-    <div class="panel">
-      <div class="watch-head"><h3>Upcoming two sessions &middot; S5 &amp; S6</h3><span class="thr">flagged under 10</span></div>
-      <div class="watch-row"><div class="sess-pill">S5</div><div><div class="watch-name">Paddle Pals</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:50%;background:var(--alert)"></div></div></div><div class="watch-count">5<small>+5 to 10</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S5</div><div><div class="watch-name">Pedalpalooza</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:50%;background:var(--alert)"></div></div></div><div class="watch-count">5<small>+5 to 10</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S5</div><div><div class="watch-name">Plein Air Painters <span style="font-weight:600;color:var(--muted);font-size:0.72rem">(Fri)</span></div><div class="watch-bar-wrap"><div class="watch-bar" style="width:60%;background:var(--gold)"></div></div></div><div class="watch-count">6<small>+4 to 10</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S5</div><div><div class="watch-name">Trailblazers</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:60%;background:var(--gold)"></div></div></div><div class="watch-count">6<small>+4 to 10</small></div></div>
-      <div class="watch-row" style="border-top:1px dashed var(--border)"><div class="sess-pill">S6</div><div><div class="watch-name">Backcountry Boys</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:60%;background:var(--gold)"></div></div></div><div class="watch-count">6<small>+4 to 10</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S6</div><div><div class="watch-name">Farmers <span style="font-weight:600;color:var(--muted);font-size:0.72rem">(Fri)</span></div><div class="watch-bar-wrap"><div class="watch-bar" style="width:80%;background:var(--gold)"></div></div></div><div class="watch-count">8<small>+2 to 10</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S6</div><div><div class="watch-name">Camp Telluride <span style="font-weight:600;color:var(--muted);font-size:0.72rem">(large camp)</span></div><div class="watch-bar-wrap"><div class="watch-bar" style="width:90%;background:var(--gold)"></div></div></div><div class="watch-count">9<small>+1 to 10</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S6</div><div><div class="watch-name">Game On</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:90%;background:var(--gold)"></div></div></div><div class="watch-count">9<small>+1 to 10</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S6</div><div><div class="watch-name">Llama Trek-O-Rama</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:90%;background:var(--gold)"></div></div></div><div class="watch-count">9<small>+1 to 10</small></div></div>
-    </div>
+ </div>
 
-    <!-- Rest of season -->
-    <div class="panel">
-      <div class="watch-head"><h3>Rest of season &middot; S7&ndash;S10</h3><span class="thr">flagged under 6</span></div>
-      <div class="watch-row"><div class="sess-pill">S7</div><div><div class="watch-name">Boulder Dash</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:67%;background:var(--gold)"></div></div></div><div class="watch-count">4<small>+2 to 6</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S8</div><div><div class="watch-name">Mud, Sweat, and Gears</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:50%;background:var(--alert)"></div></div></div><div class="watch-count">3<small>+3 to 6</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S8</div><div><div class="watch-name">Minor Miners</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:67%;background:var(--gold)"></div></div></div><div class="watch-count">4<small>+2 to 6</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S10</div><div><div class="watch-name">Super Soakers</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:33%;background:var(--alert)"></div></div></div><div class="watch-count">2<small>+4 to 6</small></div></div>
-      <div class="watch-row"><div class="sess-pill">S10</div><div><div class="watch-name">Water World</div><div class="watch-bar-wrap"><div class="watch-bar" style="width:83%;background:var(--gold)"></div></div></div><div class="watch-count">5<small>+1 to 6</small></div></div>
-    </div>
-  </div>
-
-  <!-- ===== SESSION GRID + TA TABLE ===== -->
-  <div class="section-title">Enrollment by Session &amp; Tuition Assistance Breakdown</div>
-  <div class="two-col">
-    <div class="panel">
-      <div class="chart-box"><canvas id="sessionChart"></canvas></div>
-    </div>
-
-    <div class="panel">
-      <table>
-        <thead>
-          <tr><th>Category</th><th style="text-align:right">Amount</th><th style="text-align:right">% of TA</th><th style="text-align:center">20% goal</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Tuition Assistance (need-based)</td><td class="num">$98,328</td><td class="num">38.7%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr><td>Tuition Assistance &ndash; Ajax</td><td class="num">$76,090</td><td class="num">29.9%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr><td>Local Enrolled (combined)</td><td class="num">$29,535</td><td class="num">11.6%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr><td>Deed-Restricted (combined)</td><td class="num">$23,320</td><td class="num">9.2%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr><td>West End effective TA</td><td class="num">$19,300</td><td class="num">7.6%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr><td>Zero Pay (net)</td><td class="num">$4,585</td><td class="num">1.8%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr><td>Gift Certificate</td><td class="num">$2,000</td><td class="num">0.8%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr><td>Trade (approved exception)</td><td class="num">$1,100</td><td class="num">0.4%</td><td class="ctr yes">&#10003;</td></tr>
-          <tr class="excl"><td>Trade (remainder)</td><td class="num">$13,580</td><td class="num">&mdash;</td><td class="ctr no">&mdash;</td></tr>
-          <tr class="excl"><td>Last Minute Lucky</td><td class="num">$7,508</td><td class="num">&mdash;</td><td class="ctr no">&mdash;</td></tr>
-          <tr class="excl"><td>Last Minute Lucky Internal</td><td class="num">$4,244</td><td class="num">&mdash;</td><td class="ctr no">&mdash;</td></tr>
-        </tbody>
-        <tfoot>
-          <tr><td>Total TA counted</td><td class="num">$254,258</td><td class="num">18.52% of gross</td><td class="ctr">gap $20,349</td></tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-
-  <!-- ===== FRIDAY PROGRAMS ===== -->
-  <div class="section-title">Friday Programs (Add-On Sessions)</div>
-  <div class="two-col">
-    <div class="panel">
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
-        <div><div class="kpi-label">Enrolled slots</div><div style="font-size:1.5rem;font-weight:800;color:var(--forest)">22</div><div class="kpi-sub" style="margin:0">of 36 active &middot; 61% fill</div></div>
-        <div><div class="kpi-label">Unique campers</div><div style="font-size:1.5rem;font-weight:800;color:var(--pine)">18</div><div class="kpi-sub" style="margin:0">3 in multiple</div></div>
-        <div><div class="kpi-label">Revenue</div><div style="font-size:1.5rem;font-weight:800;color:var(--sky)">$6,900</div><div class="kpi-sub" style="margin:0">avg $314/slot</div></div>
-        <div><div class="kpi-label">Open slots</div><div style="font-size:1.5rem;font-weight:800;color:var(--canyon)">14</div><div class="kpi-sub" style="margin:0">~$4.4k potential</div></div>
-      </div>
-      <div class="chart-box" style="height:230px"><canvas id="fridayChart"></canvas></div>
-    </div>
-
-    <div class="panel">
-      <table>
-        <thead>
-          <tr><th>Program</th><th>Sessions</th><th style="text-align:right">Enrolled</th><th style="text-align:right">Cap</th><th style="text-align:right">Revenue</th><th style="text-align:right">Fill</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Farmers</td><td>S6, S7</td><td class="num">16</td><td class="num">24</td><td class="num">$4,800</td><td class="num">67%</td></tr>
-          <tr><td>Plein Air Painters</td><td>S5</td><td class="num">6</td><td class="num">12</td><td class="num">$2,100</td><td class="num">50%</td></tr>
-          <tr class="excl"><td>SUP and Send <span style="font-size:0.72rem">(cancelled)</span></td><td>S8, S9</td><td class="num">0</td><td class="num">&mdash;</td><td class="num">$600</td><td class="num">&mdash;</td></tr>
-        </tbody>
-        <tfoot>
-          <tr><td>Total (active)</td><td></td><td class="num">22</td><td class="num">36</td><td class="num">$6,900</td><td class="num">61%</td></tr>
-        </tfoot>
-      </table>
-      <p style="font-size:0.78rem;color:var(--muted);margin-top:12px;line-height:1.45;">
-        <b>SUP and Send (S8&ndash;S9) no longer appears in the enrollment report</b> &mdash; all 4 remaining slots (1 in S8, 3 in S9) are gone this pull, consistent with the program being cancelled. A $600 net charge remains in the ledger (likely retained fees) &mdash; flagged below. Active Friday capacity is now 36 slots (Farmers + Plein Air).
-      </p>
-    </div>
-  </div>
-
-  <!-- ===== DATA NOTES ===== -->
-  <div class="section-title">Data Notes &amp; Reconciliation</div>
-  <div class="two-col">
-    <div class="notes">
-      <h4>Changes since last update (v48 &rarr; v49)</h4>
-      <ul>
-        <li><b>New 7.5 reports &mdash; full-ledger reconcile.</b> Fresh enrollment detail (delivered this time as a <b>CSV</b>, which makes the unique-participant count exact and the parse cleaner) and a complete Transaction Summary, both as of 7/5. No new transaction identifiers &mdash; every category matches the known list. The prior data had been held from the 7.2 pull across the 7.3&ndash;7.5 roll-forwards.</li>
-        <li><b>Net +3 summer slots: 1,043 &rarr; 1,046.</b> Session 7 <b>+4</b> (111&rarr;115) and Session 8 <b>+1</b> (126&rarr;127), offset by Session 5 <b>&minus;2</b> (138&rarr;136, consistent with the cancel-fee activity below). Camp weeks <b>1,109 &rarr; 1,112</b>. Total Session Assignments <b>1,137 &rarr; 1,141</b> (1,104 enrolled + 37 waitlist), reconciled exactly against the CSV.</li>
-        <li><b>TA +$1,850 to $254,258.25</b> &mdash; the <b>only</b> moving component is need-based Tuition Assistance ($96,478 &rarr; $98,328). Ajax, Local, Deed, West End, Zero Pay, Gift and Trade all held flat.</li>
-        <li><b>Gap to 20% narrowed $670 to $20,349 &mdash; closest to goal all season.</b> TA rose to <b>18.52%</b> of adjusted gross (from 18.46%). Adjusted gross <b>$1,367,135 &rarr; $1,373,035</b> (+$5,900), lifting the 20% goal to <b>$274,607</b>.</li>
-        <li><b>Net after discounts $1,092,683 &rarr; $1,093,445</b> (+$762) &mdash; still <b>100.5% of the $1,087,558 budget</b>. Payments +$7,786 to <b>$1,154,399</b>. Cancel fees <b>$25,093 &rarr; $29,253</b> net (+$4,160) &mdash; flagged. Refund flat at <b>$12,710</b>.</li>
-        <li><b>Unique participants 653 &rarr; 651</b> &mdash; a fresh exact count straight from the CSV (615 summer-enrolled + 36 winter/spring-only). This supersedes the 653 figure that had been parsed from the PDF; the CSV is now the authoritative source. Waitlist-only campers: 20.</li>
-        <li><b>Watchlist.</b> My First Camp (S5) and Off-Road Rookies (S7) both filled above threshold and dropped off; Trailblazers eased 7&rarr;6. Upcoming two (S5 &amp; S6) now <b>9 camps / 27 spots</b> (was 10/27); rest-of-season (S7&ndash;S10) now <b>5 camps / 12 spots</b> (was 6/13).</li>
-      </ul>
-      <h4>Manually added / adjusted</h4>
-      <ul>
-        <li><b>Remaining waitlist (23):</b> counts only sessions still open to enroll. As of today (7.5), Sessions 1&ndash;4 have started (Session 4 began June 29; Session 5 starts tomorrow, 7/6), so those are excluded. Open sessions S5&ndash;S10 hold 23 (S5 4, S6 7, S8 3, S9 9), from the live 7.5 enrollment CSV. Total summer waitlist across all sessions is 30.</li>
-        <li><b>Unique participants: exact count from the CSV, 651.</b> Distinct enrolled campers counted directly from the 7.5 enrollment CSV (normalized name dedup): <b>651</b> &mdash; 615 summer-enrolled plus 36 who are enrolled only in winter/spring programs. A further <b>20</b> campers appear on waitlists only (not enrolled anywhere). Up to 8 paper Mountainfilm campers may add if distinct. The CSV format Jason supplied makes this an exact figure rather than a parse estimate.</li>
-        <li>8 Mountainfilm enrollments still on paper, added as 8 camp weeks (no tuition); separate from the 8 spring Mountainfilm in Campminder.</li>
-        <li>West End effective TA ($19,300) calculated manually: 23 slots &times; $1,000 valuation, less $3,700 charged.</li>
-        <li>Deed-Restricted Discount ($18,520) moved from Summer Tuition into the TA/discount bucket.</li>
-        <li>Llama Land ($13,920) + Full Moon River ($9,600) folded into gross tuition from Session Programs.</li>
-      </ul>
-    </div>
-
-    <div class="notes flag">
-      <h4>Open questions (needs Jason)</h4>
-      <ul>
-        <li><b>Cancel fees jumped $4,160 to $29,253 net</b> (gross $31,253 less the $2,000 reversal). Session 5 also lost 2 slots this pull. Please confirm these are genuine withdrawals and that the fee amounts are correct.</li>
-        <li><b>Credit Balance Transfer moved to net &minus;$7,140</b> (was &minus;$4,500): a &minus;$7,990 transfer with an $850 reversal. Still excluded from all metrics pending your confirmation that it's an internal balance move, not assistance.</li>
-        <li><b>Need-based TA +$1,850 (to $98,328)</b> is the only TA mover this pull. Consistent with grants being finalized &mdash; confirm the new awards.</li>
-        <li><b>Ajax held flat at $76,090</b>, but the cumulative <b>+$2,750</b> added over earlier pulls is still unconfirmed. Please verify those are genuine awards.</li>
-        <li><b>Adopt 651 as the unique-participant headline?</b> The clean CSV count is 651; the prior 653 was a PDF parse. I've switched the dashboard to 651 (CSV = authoritative) &mdash; flag if you'd rather hold 653.</li>
-        <li><b>Last Minute Lucky rose to $7,508</b> (and LML Internal to $4,244). Both remain excluded per methodology &mdash; noting the increase in case it should be reviewed.</li>
-        <li><b>"Winter PE Climbing" still sits under Summer Tuition</b> ($225, fully reversed to net $0). No metric impact, but the miscoded line is still present &mdash; worth cleaning up in Campminder.</li>
-        <li><b>Net tuition remains over the $1,087,558 budget (100.5%).</b> The denominator keeps growing with full-pay enrollment; this pull TA grew faster, so the gap still narrowed $670.</li>
-      </ul>
-      <h4 style="color:#946400">Confirmed methodology notes</h4>
-      <ul>
-        <li><b>Zero Pay</b> is a placeholder until a family's true TA rate is set, then reclassified to formal TA or Ajax. Net $4,585 is correct to count ($305,765 charged less $301,180 reversed); the large reversal is expected reclassification, not an error. "Zero Pay internal" ($5,500, fully reversed to net $0) stays excluded.</li>
-        <li><b>Furry Friends (Overnight)</b> confirmed as tuition revenue ($15,000 net); included in adjusted gross, not an enrollment slot.</li>
-        <li>Friday Programs (22 slots) remain folded into the per-session enrolled totals (counted once, not double-counted).</li>
-      </ul>
-      <h4>Pending Campminder coding fixes</h4>
-      <ul>
-        <li>Deed-Restricted Discount is coded under Summer Tuition; should be Tuition Discounts.</li>
-        <li>West End programs have no discount line to capture effective TA.</li>
-        <li>Last Minute Lucky Internal ("Tuition Credit") should move to Tuition Discounts for consistency.</li>
-        <li>GL Code column is blank in all exports.</li>
-      </ul>
-    </div>
-  </div>
+ <div class="sec-h">Data Notes</div>
+ <div class="notes">
+  <h4>Changes since last update (v49 · July 5)</h4>
+  <ul class="changes">
+   <li>Enrollment <b>+3 summer slots</b> → 1,049 (S5 136→138, S8 127→128). Camp weeks 1,112 → <b>1,115</b>.</li>
+   <li>Summer waitlist 30 → <b>29</b>; remaining open (S6–S10) <b>19</b>. Unique participants 651 → <b>652</b>.</li>
+   <li>Total TA <b>flat at $254,258</b> — every assistance component identical to v49.</li>
+   <li>Adjusted gross +$3,535 → $1,376,570. <span class="flag">20% goal gap widened $707 → $21,056</span> (denominator grew, TA flat).</li>
+   <li>Net tuition +$2,575 → $1,096,020 (100.8% of budget). Trade discount +$960 → $15,640 total.</li>
+  </ul>
+  <h4>Known Campminder coding issues (manual handling each pull)</h4>
+  <ul>
+   <li>Deed-Restricted Discount coded under Summer Tuition — moved to discounts manually.</li>
+   <li>Llama Land ($13,920) + Full Moon River ($9,600) coded as Session Programs — added to gross manually.</li>
+   <li>West End effective TA not captured in Campminder — computed as 23 × $1,000 − $3,700 charged = $19,300.</li>
+   <li>Winter PE Climbing still under Summer Tuition ($225 charge fully reversed, net $0) — <span class="flag">miscode persists</span>.</li>
+   <li>Furry Friends (Overnight) $15,000 in Summer Tuition billing, no enrollment-slot counterpart — tracked, not counted as slots.</li>
+   <li>Last Minute Lucky Internal / "Tuition Credit" ($4,244) — excluded; recommend recoding to Tuition Discounts.</li>
+  </ul>
+  <h4>Manually added / pending decisions</h4>
+  <ul>
+   <li>8 Mountainfilm enrollments on paper (not in Campminder) added to camp weeks; no tuition revenue.</li>
+   <li>Credit Balance Transfer net −$7,140 <span class="flag">still excluded pending Jason's treatment decision</span>.</li>
+   <li>No new transaction identifiers this pull — all categories match the known list.</li>
+  </ul>
+ </div>
 
 </div>
 
 <script>
-  const gaugeData = (pct, color) => ({
-    type: 'doughnut',
-    data: { datasets: [{ data: [pct, Math.max(0,100-pct)], backgroundColor: [color, '#e6ede0'], borderWidth: 0 }] },
-    options: {
-      rotation: -90, circumference: 180, cutout: '75%',
-      plugins: { legend: { display: false }, tooltip: { enabled: false } },
-      responsive: true, maintainAspectRatio: false
-    }
-  });
-  new Chart(document.getElementById('gEnroll'), gaugeData(85.5, '#3e7b35'));
-  new Chart(document.getElementById('gRev'),    gaugeData(100.5, '#4a9eca'));
-  new Chart(document.getElementById('gTA'),     gaugeData(92.6, '#e07b39'));
+const P={forest:'#2d5a27',sky:'#4a9eca',canyon:'#e07b39',gold:'#f0b429',alert:'#e53e3e',track:'#e8efe2'};
+function gauge(id,pct,color){
+ const p=Math.max(0,Math.min(pct,100));
+ new Chart(document.getElementById(id),{type:'doughnut',
+  data:{datasets:[{data:[p,100-p],backgroundColor:[color,P.track],borderWidth:0}]},
+  options:{rotation:-90,circumference:180,cutout:'75%',plugins:{legend:{display:false},tooltip:{enabled:false}},animation:{duration:700}}});
+}
+gauge('g1',85.8,P.forest);
+gauge('g2',100,P.sky);
+gauge('g3',92.4,P.canyon); // TA shown as % of the 20% goal
 
-  const sess = [67,106,84,105,136,142,115,127,101,63];
-  const cap = 144;
-  const colors = sess.map(v => v/cap < 0.70 ? '#f0b429' : '#3e7b35');
-  new Chart(document.getElementById('sessionChart'), {
-    type: 'bar',
-    data: {
-      labels: ['S1','S2','S3','S4','S5','S6','S7','S8','S9','S10'],
-      datasets: [{ label: 'Enrolled', data: sess, backgroundColor: colors, borderRadius: 5 }]
-    },
-    options: {
-      indexAxis: 'y',
-      scales: {
-        x: { suggestedMax: cap, grid: { color: '#eef3e9' }, title: { display: true, text: 'Slots enrolled (capacity ~144/session)', color: '#6b7b6b', font: { size: 11 } } },
-        y: { grid: { display: false } }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: c => `${c.parsed.x} enrolled  (${Math.round(c.parsed.x/cap*100)}% of ~144)` } }
-      },
-      responsive: true, maintainAspectRatio: false
-    }
-  });
+// session grid
+const arr=[67,106,84,105,138,142,115,128,101,63], cap=144;
+const sg=document.getElementById('sessGrid');
+arr.forEach((n,i)=>{
+ const pct=Math.round(n/cap*100);
+ let col=P.forest; if(pct<70)col=P.gold; if(pct<50)col=P.alert;
+ sg.insertAdjacentHTML('beforeend',
+  `<div class="sess"><div class="sn">S${i+1}</div>
+   <div class="track"><div class="fill" style="height:${Math.min(pct,100)}%;background:${col}"></div></div>
+   <div class="cnt">${n}</div><div class="pct">${pct}%</div></div>`);
+});
 
-  // Friday Programs: enrolled vs open by session
-  new Chart(document.getElementById('fridayChart'), {
-    type: 'bar',
-    data: {
-      labels: ['S5 Plein Air','S6 Farmers','S7 Farmers'],
-      datasets: [
-        { label: 'Enrolled', data: [6,8,8], backgroundColor: '#3e7b35', borderRadius: 4, stack: 'a' },
-        { label: 'Open', data: [6,4,4], backgroundColor: '#dde8d4', borderRadius: 4, stack: 'a' }
-      ]
-    },
-    options: {
-      scales: {
-        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
-        y: { stacked: true, beginAtZero: true, max: 12, grid: { color: '#eef3e9' }, title: { display: true, text: 'Slots (12/session)', color: '#6b7b6b', font: { size: 11 } } }
-      },
-      plugins: { legend: { display: true, labels: { boxWidth: 12, font: { size: 11 } } } },
-      responsive: true, maintainAspectRatio: false
-    }
-  });
+// watchlist
+const up=[['Backcountry Boys (S6)',6],['Farmers Fri (S6)',8],['Game On (S6)',9],['Llama Trek-O-Rama (S6)',9],
+          ['Boulder Dash (S7)',4],['H2Olympics (S7)',6],['Lone Coners (S7)',6],['Off-Road Rookies (S7)',6],
+          ['Green River Gliders (S7)',7],['Wrangler Rookies (S7)',7],['Furry Friends (S7)',8],['Llamapalooza (S7)',8],
+          ['Farmers Fri (S7)',8],['Things That Go (S7)',9]];
+const rest=[['Super Soakers (S10)',2],['Mud, Sweat & Gears (S8)',3],['Minor Miners (S8)',4],['Water World (S10)',5]];
+const wu=document.getElementById('wlUp'), wr=document.getElementById('wlRest');
+up.forEach(([c,n])=>wu.insertAdjacentHTML('beforeend',`<div class="c ${n<=5?'red':'amber'}"><span>${c}</span><span>${n} enr</span></div>`));
+rest.forEach(([c,n])=>wr.insertAdjacentHTML('beforeend',`<div class="c ${n<=3?'red':'amber'}"><span>${c}</span><span>${n} enr</span></div>`));
 </script>
 </body>
 </html>
