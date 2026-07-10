@@ -131,7 +131,7 @@
   </div>
   <div class="header-meta">
     <div class="date">Data as of July 9, 2026</div>
-    <div class="ver">v56 &middot; 7.9.26 new reports (Enrollment 9 + Transaction 2)</div>
+    <div class="ver">v57 &middot; 7.10.26 watchlist rolled forward (data held from 7.9; no new reports)</div>
   </div>
 </div>
 
@@ -321,7 +321,13 @@
   <div class="section-title">Data Notes &amp; Reconciliation</div>
   <div class="two-col">
     <div class="notes">
-      <h4>Changes since last update (v55 &rarr; v56)</h4>
+      <h4>Changes since last update (v56 &rarr; v57)</h4>
+      <ul>
+        <li><b>Watchlist rolled forward to July 10 &mdash; no new Campminder report.</b> No Enrollment or Transaction export newer than the 7.9 pull is in the dashboard folder, so all enrollment, revenue and tuition-assistance figures are <b>held exactly</b> from v56. Only the promotional watchlist window was re-checked against today's date.</li>
+        <li><b>Window unchanged</b> (Session 5 began July 6; next start is Session 6 on July 13 &mdash; today, 7/10, crosses no session boundary). Underway/excluded: S1&ndash;S5. Upcoming two: S6 &amp; S7 (flagged under 10) &mdash; <b>15 camps / 37 spots</b>. Rest of season: S8&ndash;S10 (flagged under 6) &mdash; <b>4 camps / 10 spots</b>. Identical to v56. <b>Note:</b> a run on/after July 13 will move S6 to underway/excluded and shift the upcoming-two window to S7 &amp; S8.</li>
+        <li><b>Held from v56:</b> summer slots 1,059; TA <b>$255,363 (18.43%)</b>; 20% goal $277,134; gap to goal <b>$21,771</b>; adjusted gross $1,385,670; unique participants 661.</li>
+      </ul>
+      <h4>Prior update (v55 &rarr; v56, 7.9 &mdash; new reports)</h4>
       <ul>
         <li><b>New 7.9 reports.</b> Enrollment Report (9) and a new Transaction Report (2). <b>Note on the transaction file:</b> this export is a <b>discounts-and-payments detail</b> (transaction-level), not the usual category Summary &mdash; it contains every discount, payment and credit-balance line but <b>no gross tuition charges or ancillary fee categories</b>. Every tuition-assistance component reconciled <b>exactly</b> to the 7.8 PM figures (need-based, Ajax, Local, Deed, West End, Zero Pay, Gift, Trade all unchanged), so TA, adjusted gross and the 20% gap are held; revenue gross/net are carried from the last full ledger (Transaction Summary 11) &mdash; see flag.</li>
         <li><b>Summer slots +4 to 1,059</b> &mdash; all in Session 6 (148&rarr;152), led by Backcountry Boys (6&rarr;9). Array [67,106,84,105,137,<b>152</b>,115,128,102,63]. Camp weeks <b>1,125</b>; Total Session Assignments <b>1,154</b> (1,117 enrolled + 37 waitlist), reconciled exactly to the CSV. Open summer slots <b>345</b>.</li>
@@ -368,7 +374,7 @@
       </ul>
       <h4>Manually added / adjusted</h4>
       <ul>
-        <li><b>Remaining waitlist (20):</b> counts only sessions still open to enroll. As of today (7.9), Sessions 1&ndash;5 have started (Session 5 began July 6), so those are excluded. Open sessions S6&ndash;S10 hold 20 (S6 6, S7 1, S8 4, S9 9), from the live 7.9 enrollment CSV. Total summer waitlist across all sessions is 30.</li>
+        <li><b>Remaining waitlist (20):</b> counts only sessions still open to enroll. As of today (7.10), Sessions 1&ndash;5 have started (Session 5 began July 6), so those are excluded. Open sessions S6&ndash;S10 hold 20 (S6 6, S7 1, S8 4, S9 9), from the live 7.9 enrollment CSV. Total summer waitlist across all sessions is 30.</li>
         <li><b>Summer slot capacity 1,404 &mdash; confirmed against Airtable.</b> The exact sum of camps offered each session &times; 12 slots. Cross-checked the Programming base for 2026: after excluding the per-session &ldquo;Day Boat / Day Climb / Art&rdquo; add-ons, staff records and cancelled camps, the offered-camp count is [9,11,11,11,14,14,14,15,10,8] &mdash; matching the &times;12 model. Camp Telluride and Explorers each run once per session across all 10 sessions (single-section, 12 slots each) &mdash; confirmed by Jason 7.9, so 1,404 is exact, not a floor.</li>
         <li><b>Unique participants: exact count from the CSV, 661.</b> Distinct enrolled campers via normalized name dedup: <b>661</b> &mdash; 625 summer-enrolled plus 36 enrolled only in winter/spring programs. A further <b>14</b> campers appear on waitlists only. Up to 8 paper Mountainfilm campers may add if distinct. Now tracked against the 700 goal via the dedicated gauge above.</li>
         <li>8 Mountainfilm enrollments still on paper, added as 8 camp weeks (no tuition); separate from the 8 spring Mountainfilm in Campminder.</li>
