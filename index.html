@@ -131,7 +131,7 @@
   </div>
   <div class="header-meta">
     <div class="date">Data as of July 13, 2026</div>
-    <div class="ver">v60 &middot; 7.13.26 new reports (Enrollment 12 + Transaction 4) &middot; +3 slots, TA &minus;$400, gap $21,793 &middot; window advanced to S7/S8</div>
+    <div class="ver">v61 &middot; 7.13.26 FULL-ledger reconcile (Detailed Transaction Report) &middot; revenue re-derived, adj. gross $1,395,320, gap $23,723</div>
   </div>
 </div>
 
@@ -160,12 +160,12 @@
       <div class="kpi-value">$1.10M</div>
       <div class="kpi-sub">net summer tuition &middot; budget $1,087,558</div>
       <div class="kpi-bar-wrap"><div class="kpi-bar" style="width:100%; background:var(--sky);"></div></div>
-      <div class="pct-line"><span>101.4% of net tuition budget</span><span class="pill pill-good">over budget</span></div>
+      <div class="pct-line"><span>102.0% of net tuition budget</span><span class="pill pill-good">over budget</span></div>
       <div class="kpi-grid">
-        <div>Adjusted gross full value<br><b>$1,385,670</b></div>
-        <div>Net after discounts<br><b>$1,103,015</b></div>
+        <div>Adjusted gross full value<br><b>$1,395,320</b></div>
+        <div>Net after discounts<br><b>$1,109,307</b></div>
         <div>Payments received<br><b>$1,176,617</b></div>
-        <div>Refunds / cancel fees<br><b>$15,870 / $27,718</b></div>
+        <div>Refunds / cancel fees<br><b>$15,870 / $29,118</b></div>
       </div>
     </div>
 
@@ -173,12 +173,12 @@
     <div class="kpi-card assistance">
       <div class="kpi-label">Tuition Assistance</div>
       <div class="kpi-value">$255,341</div>
-      <div class="kpi-sub">18.43% of adjusted gross &middot; goal 20%</div>
-      <div class="kpi-bar-wrap"><div class="kpi-bar" style="width:92.1%; background:var(--canyon);"></div></div>
-      <div class="pct-line"><span>92.1% of the way to 20%</span><span class="pill pill-caution">gap $21,793</span></div>
+      <div class="kpi-sub">18.30% of adjusted gross &middot; goal 20%</div>
+      <div class="kpi-bar-wrap"><div class="kpi-bar" style="width:91.5%; background:var(--canyon);"></div></div>
+      <div class="pct-line"><span>91.5% of the way to 20%</span><span class="pill pill-caution">gap $23,723</span></div>
       <div class="kpi-grid">
-        <div>20% goal ($)<br><b>$277,134</b></div>
-        <div>Gap to goal<br><b>$21,793</b></div>
+        <div>20% goal ($)<br><b>$279,064</b></div>
+        <div>Gap to goal<br><b>$23,723</b></div>
         <div>Need-based + Ajax<br><b>$178,396</b></div>
         <div>West End effective TA<br><b>$19,300</b></div>
       </div>
@@ -203,13 +203,13 @@
     <div class="gauge-card">
       <h3>Revenue</h3>
       <div class="gauge-wrap"><canvas id="gRev"></canvas>
-        <div class="gauge-center"><div class="big" style="color:var(--sky)">101.4%</div><div class="lbl">net tuition vs. budget</div></div>
+        <div class="gauge-center"><div class="big" style="color:var(--sky)">102.0%</div><div class="lbl">net tuition vs. budget</div></div>
       </div>
     </div>
     <div class="gauge-card">
       <h3>Tuition Assistance</h3>
       <div class="gauge-wrap"><canvas id="gTA"></canvas>
-        <div class="gauge-center"><div class="big" style="color:var(--canyon)">18.43%</div><div class="lbl">of gross &middot; 20% goal</div></div>
+        <div class="gauge-center"><div class="big" style="color:var(--canyon)">18.30%</div><div class="lbl">of gross &middot; 20% goal</div></div>
       </div>
     </div>
   </div>
@@ -282,7 +282,7 @@
           <tr class="excl"><td>Last Minute Lucky Internal</td><td class="num">$4,244</td><td class="num">&mdash;</td><td class="ctr no">&mdash;</td></tr>
         </tbody>
         <tfoot>
-          <tr><td>Total TA counted</td><td class="num">$255,341</td><td class="num">18.43% of gross</td><td class="ctr">gap $21,793</td></tr>
+          <tr><td>Total TA counted</td><td class="num">$255,341</td><td class="num">18.30% of gross</td><td class="ctr">gap $23,723</td></tr>
         </tfoot>
       </table>
     </div>
@@ -325,7 +325,15 @@
   <div class="section-title">Data Notes &amp; Reconciliation</div>
   <div class="two-col">
     <div class="notes">
-      <h4>Changes since last update (v59 &rarr; v60, 7.13 &mdash; new reports)</h4>
+      <h4>Changes since last update (v60 &rarr; v61, 7.13 &mdash; FULL-ledger reconcile)</h4>
+      <ul>
+        <li><b>Full Transaction Report (Detailed) received &mdash; revenue re-derived for the first time in four pulls.</b> This export finally carries gross tuition charge lines, Session Programs, registration, fundraising and refunds (not just discounts and payments). Enrollment and all TA components are <b>unchanged</b> from v60 (the discounts data was already correct); what changed is the <b>revenue denominator</b>, which had been held from the July 8 full ledger.</li>
+        <li><b>Adjusted gross $1,385,670 &rarr; $1,395,320</b> (+$9,650) &mdash; the true gross tuition for the current 1,062-slot enrollment (Summer Tuition charges $1,352,500 excl. deed + Llama Land $13,920 + Full Moon River $9,600 + West End uplift $19,300). The held figure was stale by three enrollment pulls.</li>
+        <li><b>Gap to 20% widened $1,930 to $23,723.</b> TA is unchanged at <b>$255,341</b>, but the higher denominator lifts the 20% goal to <b>$279,064</b> and eases TA to <b>18.30%</b> of gross (from 18.43%). This is the honest gap once revenue is trued up to enrollment.</li>
+        <li><b>Net after discounts $1,103,015 &rarr; $1,109,307</b> &mdash; now <b>102.0% of the $1,087,558 budget</b> (was 101.4%). <b>Cancel fees $27,718 &rarr; $29,118 net</b>; refund ($15,870) and payments received ($1,176,617) confirmed against the full ledger. Registration $25,600, Fundraising $6,275, Credit Balance Transfer &minus;$7,140 (excluded).</li>
+        <li><b>No new transaction identifiers</b> and every TA component reconciled exactly to v60 (need-based $102,306, Ajax $76,090, Local $28,770, Deed $22,700, West End $19,300, Gift $3,000, Zero Pay net $2,075, Trade $1,100). West End confirmed 23 slots (charge $3,700).</li>
+      </ul>
+      <h4>Prior update (v59 &rarr; v60, 7.13 &mdash; new reports)</h4>
       <ul>
         <li><b>New 7.13 reports.</b> Enrollment Report (12) and Transaction Report (4). The transaction export is again a <b>discounts-and-payments detail</b> (transaction-level) &mdash; it holds every discount, payment and credit line but <b>no gross tuition charges or ancillary fee categories</b>. So TA and payments are re-derived from this file, while revenue gross/net and adjusted gross are carried from the last full ledger (Transaction Summary 11). No new transaction identifiers.</li>
         <li><b>Summer slots +3 to 1,062.</b> Session 6 <b>+2</b> (152&rarr;154), Session 10 <b>+2</b> (63&rarr;65), Session 9 <b>&minus;1</b> (102&rarr;101). Array [67,106,84,105,138,<b>154</b>,114,128,<b>101</b>,<b>65</b>]. Camp weeks <b>1,128</b>; Total Session Assignments <b>1,156</b> (1,120 enrolled + 36 waitlist), reconciled exactly to the CSV. Open summer slots <b>342</b>.</li>
@@ -412,13 +420,13 @@
     <div class="notes flag">
       <h4>Open questions (needs Jason)</h4>
       <ul>
-        <li><b>The 7.13 transaction file is again a discounts-and-payments export, not a full ledger.</b> It has no gross tuition charges, so I <b>could not re-derive revenue</b> and held adjusted gross / net from the last full Transaction Summary (11). Summer slots grew +3 to 1,062 this pull (S6 +2, S10 +2, S9 &minus;1), so a small amount of full-pay tuition (~$3,600) is still <b>not in gross</b>; truing it up would modestly widen the gap. <b>Can you send a full Transaction Summary</b> (all categories) so I can reconcile revenue to the 1,062-slot enrollment? This is now the fourth consecutive discounts-only export.</li>
-        <li><b>Need-based TA fell $400 to $102,306.</b> A larger reversal posted against need-based grants this pull (no other TA category moved). Flagging so you can confirm it's a genuine award adjustment, not a coding slip.</li>
-        <li><b>Gap to 20% widened $400 to $21,793.</b> The only TA mover was the &minus;$400 need-based reversal; the denominator held. Reaching 20% still needs roughly 6&ndash;8 more full-tuition awards; is that pipeline still active, or is assistance essentially set for the summer?</li>
+        <li><b>Full ledger received &mdash; revenue reconciled. ✓</b> The Detailed Transaction Report carries gross tuition charges, so adjusted gross is now trued up to the 1,062-slot enrollment at <b>$1,395,320</b> (was held at $1,385,670). The long-standing "please send a full Transaction Summary" request is resolved for this pull &mdash; the Detailed export is the right one; using it each time going forward keeps revenue in sync with enrollment.</li>
+        <li><b>Need-based TA fell $400 to $102,306.</b> A larger reversal posted against need-based grants (no other TA category moved). Flagging so you can confirm it's a genuine award adjustment, not a coding slip.</li>
+        <li><b>Gap to 20% is now $23,723 (18.30% of gross).</b> Truing up revenue to enrollment widened the gap ~$1,930 versus the held estimate &mdash; the goal is a moving target that grows with full-pay enrollment. Reaching 20% needs roughly 7&ndash;9 more full-tuition awards; is that pipeline still active, or is assistance essentially set for the summer?</li>
         <li><b>Zero Pay net flat at $2,075</b> (charge $315,915 less reversal $313,840) &mdash; the placeholder has largely been reclassified into formal assistance, as expected. "Zero Pay internal" nets to $0 and stays excluded.</li>
         <li><b>Last Minute Lucky (excluded) rose $400 to $11,888.</b> Stays out of the TA count per methodology; flagging again in case any of it was intended as assistance.</li>
         <li><b>Recoding progress:</b> a $400 Deed-Restricted Discount now posts to Tuition Discounts (correct), while $17,500 still sits under Summer Tuition. Are you migrating deed discounts to Tuition Discounts in Campminder? If so I can stop the manual reclass once it's fully moved.</li>
-        <li><b>Cancel fees $27,718 net</b> (gross $33,903 less a $6,185 reversal) and <b>CC refunds $15,870</b> both held flat from the AM pull; the matching prior +$3,160 swing still looks like paired cancellation refunds &mdash; confirm the fee reversal is intentional.</li>
+        <li><b>Cancel fees $29,118 net</b> (re-derived from the full ledger, up from $27,718) and <b>CC refunds $15,870</b>; the two look like paired cancellation activity &mdash; confirm the fee reversals are intentional and that withdrawals are being handled as expected.</li>
         <li><b>Credit Balance Transfer net &minus;$7,140</b> (&minus;$7,990 transfer, $850 reversal) is still excluded pending your confirmation that it's an internal balance move, not assistance. Recurring open item &mdash; worth a standing decision.</li>
         <li><b>Exact capacity (1,404) uses 12 slots for every camp.</b> Camp Telluride and Explorers run multi-section (&gt;12 each), so real capacity is somewhat higher than 1,404. Do you want me to plug in their true section counts, and give me a definitive list of camps offered per session (the report omits any camp with zero sign-ups)?</li>
         <li><b>Capacity resolved (1,404 exact).</b> Camp Telluride and Explorers each run single-section in all 10 sessions (confirmed 7.9), so no multi-section uplift is needed. The only open capacity item: if a camp seats more than 12 in any session, tell me and I'll adjust that week.</li>
@@ -455,8 +463,8 @@
   });
   new Chart(document.getElementById('gEnroll'), gaugeData(86.8, '#3e7b35'));
   new Chart(document.getElementById('gUnique'), gaugeData(94.6, '#2d5a27'));
-  new Chart(document.getElementById('gRev'),    gaugeData(101.4, '#4a9eca'));
-  new Chart(document.getElementById('gTA'),     gaugeData(92.1, '#e07b39'));
+  new Chart(document.getElementById('gRev'),    gaugeData(102.0, '#4a9eca'));
+  new Chart(document.getElementById('gTA'),     gaugeData(91.5, '#e07b39'));
 
   const sess = [67,106,84,105,138,154,114,128,101,65];
   const capBySess = [108,132,132,132,168,168,168,180,120,96]; // exact: #camps/session x 12 slots
